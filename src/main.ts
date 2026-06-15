@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './middlewares/logging.middleware';
 import { AuthGuard } from './guards/auth_guard.guard';
+import { TransformInterceptor } from './interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,10 @@ async function bootstrap() {
   // GAURDS
 
   // app.useGlobalGuards(new AuthGuard(new Reflector()));
+
+  //INTERCEPTORS
+
+  // app.useGlobalInterceptors(app.get(TransformInterceptor));
 
   await app.listen(process.env.PORT ?? 3000);
 }
