@@ -1,4 +1,6 @@
+import { Type } from 'class-transformer';
 import { IsString, IsNotEmpty, IsEmail, IsNumber, IsEnum } from 'class-validator';
+import { Gender } from 'src/utils/Gender.enum';
 
 export class CreateUserDto {
     @IsString()
@@ -9,7 +11,9 @@ export class CreateUserDto {
     @IsNotEmpty()
     lastName!: string;
 
-    @IsEnum(['Male', 'Female', 'Other'])
+    @IsEnum(Gender, {
+    message: 'gender must be one of the following values: Male, Female, Other',
+  })
     gender!: 'Male' | 'Female' | 'Other';
 
     @IsEmail()
@@ -17,14 +21,8 @@ export class CreateUserDto {
     email!: string;
 
     @IsNumber()
+    @Type(() => Number) // Transform the input to a number
     phone!: number;
-
-
-    @IsString()
-    password!: string;
-
-    @IsNumber()
-    salary!: number;
 
 }
 

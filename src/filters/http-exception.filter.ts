@@ -1,0 +1,20 @@
+import { Catch, HttpException, Injectable } from "@nestjs/common";
+import { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
+import { Request, Response } from "express";
+
+@Catch(HttpException)
+@Injectable()
+export class HttpExceptionFilter implements ExceptionFilter {
+    catch(exception: HttpException, host: ArgumentsHost) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse<Response>();
+        const status = exception.getStatus();
+        const request = ctx.getRequest<Request>();
+
+        response.status(status).json({
+            statusCode: status,
+            timestamp: new Date().toISOString(),
+            url: request.url,
+        });
+    }
+}
