@@ -9,7 +9,7 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     this.logger.log('Middleware Logger');
     // req['user'] = 'user123';
-    // req['user'] = 'admin';
+    req['user'] = 'admin';
     this.logger.log(`METHOD: ${req.method}`);
     next();
   }

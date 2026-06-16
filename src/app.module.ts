@@ -6,9 +6,10 @@ import { LoggerMiddleware } from './middlewares/logging.middleware';
 import { ipBlock } from './middlewares/logging_function.middleware';
 import { AuthGuard } from './guards/auth_guard.guard';
 import { UsersModule } from './modules/users/users.module';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { FreezePipe } from './pipes/freeze.pipe';
 
 @Module({
   imports: [UsersModule],
@@ -20,9 +21,13 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
       useClass: AuthGuard,
     },
     {
-      provide:APP_INTERCEPTOR,
-      useClass:LoggingInterceptor,
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
     },
+    // {
+    //   provide: APP_PIPE,
+    //   useClass: FreezePipe,
+    // },
     TransformInterceptor,
   ],
 })
