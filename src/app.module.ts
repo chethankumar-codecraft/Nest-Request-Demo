@@ -11,20 +11,21 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { TransformInterceptor } from './interceptors/transform.interceptor';
 import { FreezePipe } from './pipes/freeze.pipe';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { UsersController } from './modules/users/users.controller';
 
 @Module({
   imports: [UsersModule],
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD, // custom provider if we have dependecy injection in AuthGuard constructor
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
-    },
+    // {
+    //   provide: APP_GUARD, // custom provider if we have dependecy injection in AuthGuard constructor
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: LoggingInterceptor,
+    // },
     // {
     //   provide: APP_PIPE,
     //   useClass: FreezePipe,
@@ -42,11 +43,11 @@ export class AppModule implements NestModule {
   }
 
   //   configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(LoggerMiddleware).forRoutes(CatController);
+  //   consumer.apply(LoggerMiddleware).forRoutes(UsersController);
   // }
 
   // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(LoggerMiddleware).forRoutes({ path: 'cat', method: RequestMethod.GET });
+  //   consumer.apply(LoggerMiddleware).forRoutes({ path: 'users', method: RequestMethod.GET });
   // }
 
   // configure(consumer: MiddlewareConsumer) {
@@ -57,12 +58,12 @@ export class AppModule implements NestModule {
   // }
 
   // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(LoggerMiddleware).exclude({ path: 'cat', method: RequestMethod.GET })
-  //     .forRoutes(CatController)
+  //   consumer.apply(LoggerMiddleware).exclude({ path: 'users', method: RequestMethod.GET })
+  //     .forRoutes(UsersController);
   // }
 
   // configure(consumer: MiddlewareConsumer) {
   //   consumer.apply(LoggerMiddleware, ipBlock)
-  //     .forRoutes(CatController)
+  //     .forRoutes(UsersController);
   // }
 }

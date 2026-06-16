@@ -24,15 +24,22 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ErrorsInterceptor } from 'src/interceptors/errors.interceptor';
 import { FreezePipe } from 'src/pipes/freeze.pipe';
+import { Public } from 'src/decorators/public.decorator';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 
 @Controller('users')
+// @UsePipes(FreezePipe)
+// @Public()
 export class UsersController {
   private logger = new Logger(UsersController.name);
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   // @UseGuards(AuthGuard) // Apply the AuthGuard to this route
-  create(@Body() createUserDto: CreateUserDto) {
+  // Apply the FreezePipe to this route
+  create(@Body() createUserDto: CreateUserDto
+) {
+    // createUserDto.firstName = "Chethan";
     this.logger.log(
       `Creating a new user with data: ${JSON.stringify(createUserDto)}`,
     );
@@ -40,15 +47,15 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(RolesGuard) // Apply the RolesGuard to all routes in this controller
-  @Roles(['admin']) // Require 'admin' role for all routes in this controller
+  // @UseGuards(RolesGuard) // Apply the RolesGuard to all routes in this controller
+  // @Roles(['admin']) // Require 'admin' role for all routes in this controller
   findAll(@Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number) {
   
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  @UseInterceptors(ErrorsInterceptor) // Apply the ErrorInterceptor to this route
+  @UseInterceptors(ErrorsInterceptor) // Apply both TransformInterceptor and ErrorsInterceptor to this route
   findOne(@Param('id') id: string) {
     if (id === '0') {
       throw new ForbiddenException('Invalid user ID');
@@ -57,12 +64,10 @@ export class UsersController {
   }
 
   @Patch(':id')
-  // @UsePipes(FreezePipe) // Apply the FreezePipe to this route
   update(
     @Param() id: string,
-    @Body(new FreezePipe()) updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
-    updateUserDto.firstName = 'John'; // This will not change the original object due to Object.freeze
     return this.usersService.update(+id, updateUserDto);
   }
 

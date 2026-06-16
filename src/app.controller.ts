@@ -8,6 +8,8 @@ export class AppController {
 
   @Get()
   getHello(): string {
+
+
     return this.appService.getHello();
   }
 
@@ -19,6 +21,6 @@ export class AppController {
   @Get('custom-error')
   @UseFilters(new HttpExceptionFilter()) // Apply the HttpExceptionFilter to this route
   getCustomError(): string {
-    throw new BadRequestException('This is a custom error message');
+    throw new BadRequestException('This is a bad request message');
   }
 }

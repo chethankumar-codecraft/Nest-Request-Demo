@@ -7,24 +7,27 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AllExceptionFilter } from './filters/allexception.filter';
+import { ipBlock } from './middlewares/logging_function.middleware';
+import { FreezePipe } from './pipes/freeze.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // MIDDLEWARES
+  // // MIDDLEWARES
 
-  // app.use(new LoggerMiddleware(app.get(AppService)).use);
-  // app.use(ipBlock);
+  // app.use(new LoggerMiddleware().use.bind(new LoggerMiddleware()));
+  // // app.use(ipBlock);
 
-  // GAURDS
+  // // GAURDS
 
   // app.useGlobalGuards(new AuthGuard(new Reflector()));
 
-  //INTERCEPTORS
+  // // INTERCEPTORS
 
   // app.useGlobalInterceptors(app.get(TransformInterceptor));
 
-  //PIPES
+  // // PIPES
+  // app.useGlobalPipes(new FreezePipe());
 
   // app.useGlobalPipes(new ValidationPipe({
   //   transform:true, // to transform incoming request data to the type of the DTO class
@@ -32,10 +35,10 @@ async function bootstrap() {
   //   forbidNonWhitelisted:true,  // to throw an error if any properties that are not defined in the DTO class are present in the incoming request data
   // }))
 
-  //EXCEPTION FILTERS
+  // // EXCEPTION FILTERS
 
   // app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalFilters(new AllExceptionFilter());
+  // app.useGlobalFilters(new AllExceptionFilter());
 
 
   await app.listen(process.env.PORT ?? 3000);
